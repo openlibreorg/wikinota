@@ -38,3 +38,18 @@ steps:
 - task: PublishBuildArtifacts@1
   inputs:
      artifactName: drop
+- task: Go@0
+  inputs:
+    command: 'get'
+    arguments: 'github.com/axw/gocov/...'
+- task: Go@0
+  inputs:
+    command: 'get'
+    arguments: 'github.com/AlekSi/gocov-xml'
+- task: CmdLine@2
+  inputs:
+    script: '/go/bin/gocov test ./... | /go/bin/gocov-xml > /coverage.xml'
+- task: PublishCodeCoverageResults@1
+  inputs:
+    codeCoverageTool: 'Cobertura'
+    summaryFileLocation: '/coverage.xml'
