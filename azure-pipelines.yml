@@ -13,9 +13,19 @@ steps:
     command: 'get'
     arguments: '-d'
     workingDirectory: '$(System.DefaultWorkingDirectory)'
+- task: Go@0
+  inputs:
+    command: 'get'
+    arguments: 'github.com/jstemmer/go-junit-report@v0.9.1'
 - task: CmdLine@2
   inputs:
-    script: 'go test ./... -cover 2>&1 | tee test.txt'
+    script: 'go test -v -bench . -count 5 2>&1 | go-junit-report > report.xml'
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'JUnit'
+    testResultsFiles: '**/report.xml'
+    mergeTestResults: true
+    failTaskOnFailedTests: true'
 - task: Go@0
   inputs:
     command: 'build'
@@ -26,10 +36,3 @@ steps:
 - task: PublishBuildArtifacts@1
   inputs:
      artifactName: drop
-- script: echo "##vso[task.setvariable variable=testres]$(cat test.txt)"
-- script: echo ">>>>> $(testres) <<<<<"
-- task: GitHubComment@0
-  inputs:
-    gitHubConnection: 'openlibreorg'
-    repositoryName: '$(Build.Repository.Name)'
-    comment: dp
