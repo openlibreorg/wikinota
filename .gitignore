@@ -1,0 +1,5 @@
+# node
+frontend/node_modules/*
+
+coverage.html
+*.out
