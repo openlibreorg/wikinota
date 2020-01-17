@@ -8,7 +8,7 @@ steps:
 - task: Go@0
   inputs:
     command: 'get'
-    arguments: 'https://github.com/i5heu/gocover-cobertura'
+    arguments: 'github.com/i5heu/gocover-cobertura'
 - task: Go@0
   inputs:
     command: 'test'
