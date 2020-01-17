@@ -13,6 +13,9 @@ steps:
     command: 'get'
     arguments: '-d'
     workingDirectory: '$(System.DefaultWorkingDirectory)'
+- task: CmdLine@2
+  inputs:
+    script: 'go test ./... -cover 2>&1 | tee test.txt'
 - task: Go@0
   inputs:
     command: 'build'
@@ -23,3 +26,9 @@ steps:
 - task: PublishBuildArtifacts@1
   inputs:
      artifactName: drop
+- script: echo "##vso[task.setvariable variable=dp]$(cat test.txt)"
+- task: GitHubComment@0
+  inputs:
+    gitHubConnection: 'openlibreorg'
+    repositoryName: '$(Build.Repository.Name)'
+    comment: dp
