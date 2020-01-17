@@ -8,15 +8,15 @@ steps:
 - task: Go@0
   inputs:
     command: 'get'
-    arguments: 'github.com/i5heu/gocover-cobertura'
+    arguments: 'github.com/axw/gocov/...'
 - task: Go@0
   inputs:
-    command: 'test'
-    arguments: '-coverprofile=cover.out ./...'
+    command: 'get'
+    arguments: 'github.com/AlekSi/gocov-xml'
 - task: CmdLine@2
   inputs:
-    script: 'gocover-cobertura < cover.out > coverage.xml'
+    script: 'gocov test ./... | gocov-xml > coverage.xml'
 - task: PublishCodeCoverageResults@1
   inputs:
-    codeCoverageTool: 'Cobertura'
-    summaryFileLocation: 'cover.out'
+    codeCoverageTool: 'JaCoCo'
+    summaryFileLocation: 'coverage.xml'
