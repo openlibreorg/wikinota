@@ -48,7 +48,7 @@ steps:
     arguments: 'github.com/AlekSi/gocov-xml'
 - task: CmdLine@2
   inputs:
-    script: '/go/bin/gocov test ./... | /go/bin/gocov-xml > /coverage.xml'
+    script: '/go/bin/gocov test ./... | /go/bin/ gocov-xml -source $(System.DefaultWorkingDirectory) > /coverage.xml'
 - task: PublishCodeCoverageResults@1
   inputs:
     codeCoverageTool: 'Cobertura'
