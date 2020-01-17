@@ -22,7 +22,6 @@ steps:
 - task: CmdLine@2
   inputs:
     script: 'mkdir /bar; go test  ./... -coverprofile /bar/cover.out -v -bench -count 5 2>&1 | /go/bin/go-junit-report > /report.xml'
-- task: ManualIntervention@8
 - task: CmdLine@2
   inputs:
     script: 'go tool cover -html /bar/cover.out -o /bar/cover.html'
