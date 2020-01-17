@@ -7,5 +7,16 @@ pool:
 steps: 
 - task: Go@0
   inputs:
+    command: 'get'
+    arguments: 'https://github.com/i5heu/gocover-cobertura'
+- task: Go@0
+  inputs:
     command: 'test'
-    arguments: './...'
+    arguments: '-coverprofile=cover.out ./...'
+- task: CmdLine@2
+  inputs:
+    script: 'gocover-cobertura < cover.out > coverage.xml'
+- task: PublishCodeCoverageResults@1
+  inputs:
+    codeCoverageTool: 'Cobertura'
+    summaryFileLocation: 'cover.out'
